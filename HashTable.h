@@ -1,7 +1,6 @@
-//Programmer Name: Thomas Molnar-Brock
+//Programmer Name: Thomas Molnar-Brock, Josh, Justin Goodman, Kyle
 //Programmer ID: 1744869
-//Assignment Name: Assignment Ten - Hashtable
-
+//Assignment Name: Final Project
 #ifndef HashTable_h
 #define HashTable_h
 #include <queue>
@@ -29,7 +28,10 @@ public:
   void deleteKey(const K&); //setter
   std::queue<K> keys() const;
   int size() const {return siz;}
+  int n_size() const {return n_siz;}
   void clear();
+  double average();
+  void sort();
 };
 
 template <typename K, typename V, int CAP> //constructor
@@ -55,8 +57,8 @@ V HashTable<K,V,CAP>::operator[](const K& key) const{
     if(it->key == key){
       return it->value; //found at it
     }
-    return V(); //not found
   }
+  return V(); //not found
 }
 template <typename K, typename V, int CAP> //square-bracket setter
 V& HashTable<K,V,CAP>::operator[](const K& key){
@@ -118,8 +120,27 @@ void HashTable<K,V,CAP>::clear() {
   n_siz = 0;
   siz = 0;
 }
-
+//Additional functions for our application
+template<typename K, typename V, int CAP>
+double HashTable<K, V, CAP>::average() {
+  double sum = 0;
+  double count = 0;
+  typename std::list<Node>::const_iterator it;
+  for (int a = 0; a < CAP; a++) {
+    for (it = data[a].begin(); it != data[a].end(); it++, count++) {
+      sum += it->key;
+    }
+  }
+  return (sum / count);
+}
+template<typename K, typename V, int CAP>
+void HashTable<K, V, CAP>::sort() {
+  for (int i = 0; i < CAP; i++) {
+    if (!data[i].empty()) {
+      data[i].sort();
+    }
+  }
+}
 #endif
-
 
 
